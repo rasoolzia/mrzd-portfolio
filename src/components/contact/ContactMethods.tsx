@@ -30,7 +30,7 @@ const CONTACT_ITEMS = [
    },
    {
       label: 'LinkedIn',
-      value: contact.linkedin.replace('https://', ''),
+      value: contact.linkedin.replace(/^https:\/\/(www\.)?/, ''),
       href: contact.linkedin,
       icon: LinkedinIcon,
    },
