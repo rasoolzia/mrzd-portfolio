@@ -29,6 +29,10 @@ export const brand = {
    name: 'MRZD',
    fullName: 'Mohammad Rasool Ziaaddini',
    meaning: 'Mohammad · Rasool · Ziaaddini · Developer',
+   alias: {
+      label: 'rasoolzia.ir',
+      link: 'https://rasoolzia.ir'
+   },
    letters: [
       { letter: 'M', color: '#ff4444' },
       { letter: 'R', color: '#ff8844' },

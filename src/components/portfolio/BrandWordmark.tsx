@@ -17,6 +17,17 @@ export default function BrandWordmark() {
          <p className="mt-2 text-xs tracking-wide text-slate-400 sm:text-sm">
             {brand.meaning}
          </p>
+         <p className="text-sm">
+            (also{' '}
+            <a
+               href={brand.alias.link}
+               target="_blank"
+               className="hover:underline"
+            >
+               {brand.alias.label}
+            </a>
+            )
+         </p>
       </div>
    );
 }
