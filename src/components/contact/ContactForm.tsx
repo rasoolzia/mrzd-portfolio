@@ -6,7 +6,7 @@ import { MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 import Button from '../common/Button';
 
-const API_URL = getHref('bot', 'send-message/');
+const API_URL = getHref('bot', 'send-message');
 
 function normalizeContact(value: string): string {
    const trimmed = value.trim();
