@@ -1,10 +1,10 @@
 import InfoGrid from '@/components/terminal/InfoGrid';
 import TerminalList from '@/components/terminal/TerminalList';
 import {
-   certifications,
    contact,
    education,
    experience,
+   professional,
    profile,
    projects,
    skills,
@@ -40,7 +40,8 @@ export const FILES = Object.fromEntries([
                </div>
             )),
             <div>
-               <strong>Certifications:</strong> {certifications.join(', ')}
+               <strong>Professional Development:</strong>{' '}
+               {professional.join(', ')}
             </div>,
          ]}
       />
