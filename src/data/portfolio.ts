@@ -182,7 +182,7 @@ export const projects: Project[] = [
 export const contact = {
    email: 'rasool.ziaaddini@gmail.com',
    github: 'https://github.com/rasoolzia',
-   linkedin: 'https://linkedin.com/in/rasoolzia',
+   linkedin: 'https://www.linkedin.com/in/rasoolzia',
    phone: '+98 913 589 2600',
    location: 'Tehran, Iran',
    telegram: 'https://t.me/rasoolzia',
