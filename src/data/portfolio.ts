@@ -199,7 +199,7 @@ export const contact = {
    email: 'rasool.ziaaddini@gmail.com',
    github: 'https://github.com/rasoolzia',
    linkedin: 'https://www.linkedin.com/in/rasoolzia',
-   phone: '+98 913 589 2600',
-   location: 'Mashhad, Iran',
+   phone: '+1 431 451 9587',
+   location: 'Istanbul, Turkey',
    telegram: 'https://t.me/rasoolzia',
 };
