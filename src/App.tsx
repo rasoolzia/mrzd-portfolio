@@ -1,5 +1,9 @@
 function App() {
-  return <div>Terminal Portfolio</div>;
+  return (
+    <div className="bg-black text-green-400 min-h-screen flex items-center justify-center font-mono">
+      Terminal Portfolio
+    </div>
+  );
 }
 
 export default App;
