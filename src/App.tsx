@@ -1,9 +1,5 @@
-function App() {
-  return (
-    <div className="bg-black text-green-400 min-h-screen flex items-center justify-center font-mono">
-      Terminal Portfolio
-    </div>
-  );
-}
+import Home from './pages/Home';
 
-export default App;
+export default function App() {
+   return <Home />;
+}
