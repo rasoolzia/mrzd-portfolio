@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Cursor from './Cursor';
 
 type CommandHandler = () => React.ReactNode;
@@ -17,9 +17,13 @@ export default function InteractiveTerminal({ commands }: Props) {
 
    const inputRef = useRef<HTMLInputElement>(null);
 
-   useEffect(() => {
+   const makeInputFocus = useCallback(() => {
       inputRef.current?.focus();
    }, []);
+
+   useEffect(() => {
+      makeInputFocus();
+   }, [makeInputFocus]);
 
    function runCommand(cmd: string) {
       const trimmed = cmd.trim();
@@ -77,7 +81,7 @@ export default function InteractiveTerminal({ commands }: Props) {
    }
 
    return (
-      <div className="p-6 text-sm">
+      <div className="p-6 text-sm min-h-96 max-h-96 overflow-auto" onClick={makeInputFocus}>
          {history.map((item, i) => (
             <div key={i} className="mb-4">
                <div>
@@ -91,6 +95,7 @@ export default function InteractiveTerminal({ commands }: Props) {
 
          <form onSubmit={handleSubmit} className="flex items-center">
             <span className="text-green-400 mr-2">$</span>
+            {!input && <Cursor />}
 
             <input
                ref={inputRef}
@@ -100,8 +105,6 @@ export default function InteractiveTerminal({ commands }: Props) {
                className="bg-transparent outline-none flex-1"
                autoComplete="off"
             />
-
-            {!input && <Cursor />}
          </form>
       </div>
    );
