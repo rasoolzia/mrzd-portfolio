@@ -1,11 +1,15 @@
+import { getCommands } from '../../data/commands';
 import { cn } from '../../lib/cn';
+import InteractiveTerminal from './InteractiveTerminal';
+import TerminalHeader from './TerminalHeader';
 
 type Props = {
-   children: React.ReactNode;
    className?: string;
 };
 
-export default function Terminal({ children, className }: Props) {
+export default function Terminal({ className }: Props) {
+   const commands = getCommands();
+
    return (
       <div
          className={cn(
@@ -13,7 +17,9 @@ export default function Terminal({ children, className }: Props) {
             className,
          )}
       >
-         {children}
+         <TerminalHeader />
+
+         <InteractiveTerminal commands={commands} />
       </div>
    );
 }
