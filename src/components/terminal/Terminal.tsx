@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from 'react';
 import { getCommands } from '../../data/commands';
 import { cn } from '../../lib/cn';
 import InteractiveTerminal from './InteractiveTerminal';
@@ -5,9 +6,10 @@ import TerminalHeader from './TerminalHeader';
 
 type Props = {
    className?: string;
+   setShowTerminal?: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function Terminal({ className }: Props) {
+export default function Terminal({ className, setShowTerminal }: Props) {
    const commands = getCommands();
 
    return (
@@ -17,7 +19,7 @@ export default function Terminal({ className }: Props) {
             className,
          )}
       >
-         <TerminalHeader />
+         <TerminalHeader setShowTerminal={setShowTerminal} />
 
          <InteractiveTerminal commands={commands} />
       </div>
