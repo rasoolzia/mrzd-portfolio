@@ -9,12 +9,12 @@ const COLORS = [
 
 export default function RainbowDivider() {
    return (
-      <div className="flex h-2 my-8">
+      <div className="my-8 flex h-2 overflow-hidden rounded-full">
          {COLORS.map((color) => (
             <div
                key={color}
-               className="flex-1 hover:flex-2 duration-200"
-               style={{ background: color }}
+               className="flex-1 transition-[flex-grow] duration-200 hover:flex-2"
+               style={{ backgroundColor: color }}
             />
          ))}
       </div>

@@ -1,12 +1,11 @@
 export default function PixelRocket() {
    return (
       <svg
-         className="w-20"
+         className="w-20 mb-8"
          viewBox="0 0 64 64"
          xmlns="http://www.w3.org/2000/svg"
          style={{
             imageRendering: 'pixelated',
-            marginBottom: '2rem',
          }}
       >
          <rect x="28" y="8" width="8" height="8" fill="#ff4444" />
