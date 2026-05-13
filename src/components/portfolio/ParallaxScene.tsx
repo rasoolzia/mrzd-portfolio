@@ -71,23 +71,20 @@ export default function ParallaxScene() {
    }, []);
 
    return (
-      <div className="w-full h-full relative">
+      <div className="relative h-full w-full overflow-hidden">
          {LAYERS.map((layer, i) => (
             <div
                key={i}
                ref={(el) => {
                   layerRefs.current[i] = el;
                }}
-               className="absolute inset-0 flex items-center justify-center"
-               style={{
-                  transition: 'transform 0.1s ease-out',
-               }}
+               className="absolute inset-0 flex items-center justify-center transition-transform duration-100 ease-out will-change-transform"
             >
                <div className="w-150 h-150 opacity-15">
                   <svg
                      viewBox="0 0 600 600"
                      xmlns="http://www.w3.org/2000/svg"
-                     className="w-full h-full"
+                     className="h-full w-full"
                   >
                      <ShapeSVG shape={layer.shape} />
                   </svg>
