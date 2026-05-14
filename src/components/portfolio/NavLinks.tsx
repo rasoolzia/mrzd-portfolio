@@ -11,52 +11,47 @@ interface LinkItem {
 }
 
 const LINKS: LinkItem[] = [
-   { symbol: '△', color: '#ff4444', label: 'about', href: '#about' },
+   { symbol: '△', color: '#ff4444', label: 'playbook', href: '#playbook' },
    { symbol: '○', color: '#ff8844', label: 'projects', href: '#projects' },
-   { symbol: '□', color: '#ffdd44', label: 'skills', href: '#skills' },
-   { symbol: '◇', color: '#44ff44', label: 'experience', href: '#experience' },
-   { symbol: '◿', color: '#ffdd44', label: 'blog', href: '#blog' },
+   { symbol: '□', color: '#ffdd44', label: 'games', href: '#games' },
+   { symbol: '◇', color: '#44ff44', label: 'tools', href: '#tools' },
+   { symbol: '◿', color: '#ffdd44', label: 'cv', href: '#cv' },
    {
       symbol: '+',
       color: '#ff4444',
       label: 'github',
-      href: 'https://github.com/yourusername',
+      href: 'https://github.com/rasoolzia',
       external: true,
    },
    {
       symbol: '☆',
       color: '#44ddff',
       label: 'linkedin',
-      href: 'https://linkedin.com/in/yourusername',
+      href: 'https://linkedin.com/in/rasoolzia',
       external: true,
    },
    {
       symbol: '▱',
       color: '#ff8844',
       label: 'contact',
-      href: 'mailto:your@email.com',
+      href: 'mailto:rasool.ziaaddini@gmail.com',
    },
 ] as const;
 
+const baseLinkClasses =
+   'text-sky-300 no-underline transition-colors duration-150 hover:text-white';
+
 export default function NavLinks({ onShowTerminal }: NavLinksProps) {
    return (
-      <div className="leading-loose">
+      <nav className="leading-loose flex gap-2 flex-wrap">
          {LINKS.map(({ symbol, color, label, href, external }) => (
-            <span key={label}>
+            <span key={label} className="inline-flex items-center gap-2">
                <span style={{ color }}>{symbol}</span>{' '}
                <a
                   href={href}
                   target={external ? '_blank' : undefined}
                   rel={external ? 'noopener noreferrer' : undefined}
-                  style={{
-                     color: '#64b5f6',
-                     textDecoration: 'none',
-                     marginRight: '0.75rem',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
-                  onMouseLeave={(e) =>
-                     (e.currentTarget.style.color = '#64b5f6')
-                  }
+                  className={baseLinkClasses}
                >
                   {label}
                </a>
@@ -64,25 +59,16 @@ export default function NavLinks({ onShowTerminal }: NavLinksProps) {
          ))}
 
          {/* Terminal button — same style as other links */}
-         <span>
+         <span className="inline-flex items-center">
             <span style={{ color: '#44ff44' }}>{'>'}_</span>{' '}
             <button
+               type="button"
                onClick={onShowTerminal}
-               style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#64b5f6',
-                  fontSize: '1rem',
-                  cursor: 'pointer',
-                  padding: 0,
-                  marginRight: '0.75rem',
-               }}
-               onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
-               onMouseLeave={(e) => (e.currentTarget.style.color = '#64b5f6')}
+               className={`${baseLinkClasses} cursor-pointer bg-transparent border-none p-0 font-inherit`}
             >
                terminal
             </button>
          </span>
-      </div>
+      </nav>
    );
 }
