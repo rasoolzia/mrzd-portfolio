@@ -9,71 +9,35 @@ interface PortfolioProps {
 
 export default function Portfolio({ onShowTerminal }: PortfolioProps) {
    return (
-      <div
-         style={{
-            display: 'flex',
-            minHeight: '100vh',
-            background: '#0a0e27',
-            fontFamily: "'JetBrains Mono', monospace",
-            color: '#8892b0',
-            overflow: 'hidden',
-         }}
-      >
+      <div className="flex min-h-screen overflow-hidden bg-[#0a0e27] font-['JetBrains_Mono',monospace] text-slate-400">
          {/* Left — content */}
-         <div
-            style={{
-               flex: 1,
-               display: 'flex',
-               alignItems: 'center',
-               justifyContent: 'center',
-               padding: '3rem',
-               zIndex: 10,
-               position: 'relative',
-            }}
-         >
-            <div style={{ maxWidth: 600 }}>
+         <section className="relative z-10 flex flex-1 items-center justify-center px-6 py-10 md:px-12 lg:px-16">
+            <div className="max-w-xl">
                <PixelRocket />
 
-               <h1
-                  style={{
-                     background:
-                        'linear-gradient(90deg, #ff4444 0%, #ff8844 16.66%, #ffdd44 33.33%, #44ff44 50%, #44ddff 66.66%, #4444ff 83.33%, #ff44ff 100%)',
-                     WebkitBackgroundClip: 'text',
-                     WebkitTextFillColor: 'transparent',
-                     backgroundClip: 'text',
-                     fontSize: '3rem',
-                     fontWeight: 700,
-                     marginBottom: '1.5rem',
-                     lineHeight: 1.2,
-                  }}
-               >
-                  Your Name
+               <h1 className="mb-6 bg-linear-to-r from-[#ff4444] to-[#ff7b00] bg-clip-text text-4xl font-bold leading-tight text-transparent sm:text-5xl">
+                  Rasool Zia
                </h1>
 
-               <p
-                  style={{
-                     fontSize: '1rem',
-                     lineHeight: 1.8,
-                     marginBottom: '1.5rem',
-                     color: '#64b5f6',
-                  }}
-               >
-                  Hi, I'm Your Name — a senior React developer and full-stack
-                  engineer. I build modern web applications with cutting-edge
-                  technologies, focusing on performance, scalability, and
-                  delightful user experiences.
+               <p className="mb-6 text-sm leading-relaxed text-sky-300 md:text-base">
+                  Hi, I&apos;m Rasool — a Senior Frontend Engineer with over 6
+                  years of experience specializing in React (Next.js) and
+                  Vue.js. I architect scalable, high-performance web
+                  applications and enterprise-grade solutions with a deep focus
+                  on clean code, performance optimization, and pixel-perfect
+                  design.
                </p>
 
                <RainbowDivider />
 
                <NavLinks onShowTerminal={onShowTerminal} />
             </div>
-         </div>
+         </section>
 
          {/* Right — parallax scene */}
-         <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+         <aside className="flex-1">
             <ParallaxScene />
-         </div>
+         </aside>
       </div>
    );
 }
