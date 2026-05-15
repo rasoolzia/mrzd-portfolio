@@ -1,5 +1,27 @@
 @import 'tailwindcss';
 
 body {
-   @apply bg-[#0b0b0b] text-zinc-300 font-mono antialiased;
+   @apply bg-neutral-950 text-zinc-300 font-mono antialiased;
+}
+
+@keyframes move-stripes {
+   from {
+      transform: translateX(0);
+   }
+   to {
+      transform: translateX(-50%);
+   }
+}
+
+@keyframes move-stripes-reverse {
+   from {
+      transform: translateX(-50%);
+   }
+   to {
+      transform: translateX(0);
+   }
+}
+
+.animate-infinite-scroll {
+   animation: move-stripes-reverse 8s linear infinite;
 }

@@ -9,14 +9,16 @@ const COLORS = [
 
 export default function RainbowDivider() {
    return (
-      <div className="my-8 flex h-2 overflow-hidden rounded-full">
-         {COLORS.map((color) => (
-            <div
-               key={color}
-               className="flex-1 transition-[flex-grow] duration-200 hover:flex-2"
-               style={{ backgroundColor: color }}
-            />
-         ))}
+      <div className="my-8 h-2 w-full overflow-hidden rounded-full">
+         <div className="flex h-full w-[200%] animate-infinite-scroll">
+            {[...COLORS, ...COLORS].map((color, index) => (
+               <div
+                  key={`${color}-${index}`}
+                  className="flex-1"
+                  style={{ backgroundColor: color }}
+               />
+            ))}
+         </div>
       </div>
    );
 }
