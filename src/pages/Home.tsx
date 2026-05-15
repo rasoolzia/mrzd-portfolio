@@ -7,7 +7,7 @@ export default function Home() {
 
    return (
       <main style={{ position: 'relative', minHeight: '100vh' }}>
-         <Portfolio onShowTerminal={() => setShowTerminal(true)} />
+         <Portfolio onHandleAction={() => setShowTerminal(true)} />
 
          {showTerminal && (
             <div

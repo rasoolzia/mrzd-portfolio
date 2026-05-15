@@ -1,12 +1,13 @@
 interface NavLinksProps {
-   onShowTerminal: () => void;
+   onHandleAction: () => void;
 }
 
 interface LinkItem {
    symbol: string;
    color: string;
    label: string;
-   href: string;
+   href?: string;
+   action?: 'terminal' | 'contact';
    external?: boolean;
 }
 
@@ -34,41 +35,46 @@ const LINKS: LinkItem[] = [
       symbol: '▱',
       color: '#ff8844',
       label: 'contact',
-      href: 'mailto:rasool.ziaaddini@gmail.com',
+      action: 'terminal',
    },
-] as const;
+   {
+      symbol: '>',
+      color: '#44ff44',
+      label: 'terminal',
+      action: 'terminal',
+   },
+];
 
 const baseLinkClasses =
    'text-sky-300 no-underline transition-colors duration-150 hover:text-white';
 
-export default function NavLinks({ onShowTerminal }: NavLinksProps) {
+export default function NavLinks({ onHandleAction }: NavLinksProps) {
    return (
-      <nav className="leading-loose flex gap-2 flex-wrap">
-         {LINKS.map(({ symbol, color, label, href, external }) => (
+      <nav className="leading-loose flex gap-4 flex-wrap">
+         {LINKS.map(({ symbol, color, label, href, action, external }) => (
             <span key={label} className="inline-flex items-center gap-2">
-               <span style={{ color }}>{symbol}</span>{' '}
-               <a
-                  href={href}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                  className={baseLinkClasses}
-               >
-                  {label}
-               </a>
+               <span style={{ color }}>{symbol}</span>
+
+               {action ? (
+                  <button
+                     type="button"
+                     onClick={onHandleAction}
+                     className={`${baseLinkClasses} cursor-pointer bg-transparent border-none p-0 font-inherit`}
+                  >
+                     {label}
+                  </button>
+               ) : (
+                  <a
+                     href={href}
+                     target={external ? '_blank' : undefined}
+                     rel={external ? 'noopener noreferrer' : undefined}
+                     className={baseLinkClasses}
+                  >
+                     {label}
+                  </a>
+               )}
             </span>
          ))}
-
-         {/* Terminal button — same style as other links */}
-         <span className="inline-flex items-center">
-            <span style={{ color: '#44ff44' }}>{'>'}_</span>{' '}
-            <button
-               type="button"
-               onClick={onShowTerminal}
-               className={`${baseLinkClasses} cursor-pointer bg-transparent border-none p-0 font-inherit`}
-            >
-               terminal
-            </button>
-         </span>
       </nav>
    );
 }

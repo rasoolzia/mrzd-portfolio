@@ -4,10 +4,10 @@ import ParallaxScene from './ParallaxScene';
 import RainbowDivider from './RainbowDivider';
 
 interface PortfolioProps {
-   onShowTerminal: () => void;
+   onHandleAction: () => void;
 }
 
-export default function Portfolio({ onShowTerminal }: PortfolioProps) {
+export default function Portfolio({ onHandleAction }: PortfolioProps) {
    return (
       <div className="flex min-h-screen overflow-hidden bg-[#0a0e27] font-['JetBrains_Mono',monospace] text-slate-400">
          {/* Left — content */}
@@ -30,7 +30,7 @@ export default function Portfolio({ onShowTerminal }: PortfolioProps) {
 
                <RainbowDivider />
 
-               <NavLinks onShowTerminal={onShowTerminal} />
+               <NavLinks onHandleAction={onHandleAction} />
             </div>
          </section>
 
