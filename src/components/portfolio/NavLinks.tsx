@@ -1,3 +1,5 @@
+import { getHref } from '../../helper/getHref';
+
 interface NavLinksProps {
    onHandleAction: () => void;
 }
@@ -12,11 +14,21 @@ interface LinkItem {
 }
 
 const LINKS: LinkItem[] = [
-   { symbol: '△', color: '#ff4444', label: 'playbook', href: '#playbook' },
-   { symbol: '○', color: '#ff8844', label: 'projects', href: '#projects' },
+   {
+      symbol: '△',
+      color: '#ff4444',
+      label: 'playbook',
+      href: getHref('playbook'),
+   },
+   {
+      symbol: '○',
+      color: '#ff8844',
+      label: 'projects',
+      href: getHref('demo'),
+   },
    { symbol: '□', color: '#ffdd44', label: 'games', href: '#games' },
    { symbol: '◇', color: '#44ff44', label: 'tools', href: '#tools' },
-   { symbol: '◿', color: '#ffdd44', label: 'cv', href: '#cv' },
+   { symbol: '◿', color: '#ffdd44', label: 'cv', href: getHref('cv') },
    {
       symbol: '+',
       color: '#ff4444',
