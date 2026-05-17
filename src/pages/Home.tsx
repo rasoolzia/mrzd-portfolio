@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Portfolio from '../components/portfolio/Portfolio';
 import Terminal from '../components/terminal/Terminal';
 
 export default function Home() {
    const [showTerminal, setShowTerminal] = useState(false);
 
+   const handleAction = useCallback((action: string) => {
+      console.log('action :', action);
+      setShowTerminal(true);
+   }, []);
+
    return (
       <main style={{ position: 'relative', minHeight: '100vh' }}>
-         <Portfolio onHandleAction={() => setShowTerminal(true)} />
+         <Portfolio onHandleAction={handleAction} />
 
          {showTerminal && (
             <div

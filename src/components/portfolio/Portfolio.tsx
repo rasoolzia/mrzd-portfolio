@@ -4,7 +4,7 @@ import ParallaxScene from './ParallaxScene';
 import RainbowDivider from './RainbowDivider';
 
 interface PortfolioProps {
-   onHandleAction: () => void;
+   onHandleAction: (action: string) => void;
 }
 
 export default function Portfolio({ onHandleAction }: PortfolioProps) {

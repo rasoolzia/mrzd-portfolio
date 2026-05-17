@@ -1,15 +1,17 @@
 import { getHref } from '../../helper/getHref';
 
 interface NavLinksProps {
-   onHandleAction: () => void;
+   onHandleAction: (action: LinkItemAction) => void;
 }
+
+type LinkItemAction = 'terminal' | 'contact';
 
 interface LinkItem {
    symbol: string;
    color: string;
    label: string;
    href?: string;
-   action?: 'terminal' | 'contact';
+   action?: LinkItemAction;
    external?: boolean;
 }
 
@@ -47,7 +49,7 @@ const LINKS: LinkItem[] = [
       symbol: '▱',
       color: '#ff8844',
       label: 'contact',
-      action: 'terminal',
+      action: 'contact',
    },
    {
       symbol: '>',
@@ -70,7 +72,7 @@ export default function NavLinks({ onHandleAction }: NavLinksProps) {
                {action ? (
                   <button
                      type="button"
-                     onClick={onHandleAction}
+                     onClick={() => onHandleAction(action)}
                      className={`${baseLinkClasses} cursor-pointer bg-transparent border-none p-0 font-inherit`}
                   >
                      {label}
