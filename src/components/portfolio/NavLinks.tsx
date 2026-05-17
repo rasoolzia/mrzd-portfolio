@@ -1,18 +1,8 @@
 import { getHref } from '../../helper/getHref';
+import type { LinkItem, NavAction } from '../../types/nav';
 
 interface NavLinksProps {
-   onHandleAction: (action: LinkItemAction) => void;
-}
-
-type LinkItemAction = 'terminal' | 'contact';
-
-interface LinkItem {
-   symbol: string;
-   color: string;
-   label: string;
-   href?: string;
-   action?: LinkItemAction;
-   external?: boolean;
+   onHandleAction: (action: NavAction) => void;
 }
 
 const LINKS: LinkItem[] = [

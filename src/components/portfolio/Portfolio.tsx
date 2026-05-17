@@ -1,10 +1,11 @@
+import type { NavAction } from '../../types/nav';
 import PixelRocket from '../svg/PixelRocket';
 import NavLinks from './NavLinks';
 import ParallaxScene from './ParallaxScene';
 import RainbowDivider from './RainbowDivider';
 
 interface PortfolioProps {
-   onHandleAction: (action: string) => void;
+   onHandleAction: (action: NavAction) => void;
 }
 
 export default function Portfolio({ onHandleAction }: PortfolioProps) {
