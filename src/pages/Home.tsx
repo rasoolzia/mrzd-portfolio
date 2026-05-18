@@ -1,39 +1,23 @@
 import { useCallback, useState } from 'react';
 import Portfolio from '../components/portfolio/Portfolio';
 import Terminal from '../components/terminal/Terminal';
+import type { NavAction } from '../types/nav';
 
 export default function Home() {
-   const [showTerminal, setShowTerminal] = useState(false);
+   const [activeModal, setActiveModal] = useState<NavAction | null>(null);
 
-   const handleAction = useCallback((action: string) => {
-      console.log('action :', action);
-      setShowTerminal(true);
-   }, []);
+   const handleAction = useCallback(
+      (action: NavAction) => setActiveModal(action),
+      [],
+   );
+   const handleClose = useCallback(() => setActiveModal(null), []);
 
    return (
-      <main style={{ position: 'relative', minHeight: '100vh' }}>
+      <main className="relative min-h-screen">
          <Portfolio onHandleAction={handleAction} />
 
-         {showTerminal && (
-            <div
-               style={{
-                  position: 'fixed',
-                  inset: 0,
-                  zIndex: 50,
-                  background: 'rgba(10, 14, 39, 0.85)',
-                  backdropFilter: 'blur(4px)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-               }}
-               onClick={(e) => {
-                  // close overlay when clicking the backdrop
-                  if (e.target === e.currentTarget) setShowTerminal(false);
-               }}
-            >
-               <Terminal setShowTerminal={setShowTerminal} />
-            </div>
-         )}
+         {activeModal === 'terminal' && <Terminal onClose={handleClose} />}
+         {/* {activeModal === 'contact' && <ContactModal onClose={handleClose} />} */}
       </main>
    );
 }
