@@ -29,7 +29,7 @@ export default function Terminal({ className, onClose }: Props) {
             )}
          >
             <TerminalHeader onClose={onClose} />
-            <InteractiveTerminal commands={commands} />
+            <InteractiveTerminal commands={commands} onClose={onClose} />
          </div>
       </div>
    );

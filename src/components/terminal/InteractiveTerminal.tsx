@@ -5,9 +5,10 @@ type CommandHandler = () => React.ReactNode;
 
 type Props = {
    commands: Record<string, CommandHandler>;
+   onClose?: () => void;
 };
 
-export default function InteractiveTerminal({ commands }: Props) {
+export default function InteractiveTerminal({ commands, onClose }: Props) {
    const [history, setHistory] = useState<
       { command: string; output: React.ReactNode }[]
    >([]);
@@ -30,6 +31,11 @@ export default function InteractiveTerminal({ commands }: Props) {
 
       if (trimmed === 'clear') {
          setHistory([]);
+         return;
+      }
+
+      if (trimmed === 'exit') {
+         onClose?.();
          return;
       }
 
@@ -81,7 +87,10 @@ export default function InteractiveTerminal({ commands }: Props) {
    }
 
    return (
-      <div className="p-6 text-sm min-h-96 max-h-96 overflow-auto" onClick={makeInputFocus}>
+      <div
+         className="p-6 text-sm min-h-96 max-h-96 overflow-auto"
+         onClick={makeInputFocus}
+      >
          {history.map((item, i) => (
             <div key={i} className="mb-4">
                <div>
