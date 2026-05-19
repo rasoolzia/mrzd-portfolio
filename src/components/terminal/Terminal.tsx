@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { getCommands } from '../../data/commands';
 import { cn } from '../../lib/cn';
 import InteractiveTerminal from './InteractiveTerminal';
@@ -9,14 +10,14 @@ type Props = {
 };
 
 export default function Terminal({ className, onClose }: Props) {
-   const commands = getCommands();
+   const commands = useMemo(() => getCommands(), []);
 
    return (
       <div
          className="fixed inset-0 z-10 flex items-center justify-center bg-[rgba(10,14,39,0.85)] backdrop-blur-sm"
-         onClick={(e) => {
-            if (e.target === e.currentTarget) onClose?.();
-         }}
+         // onClick={(e) =>
+         //    e.target === e.currentTarget ? onClose?.() : undefined
+         // }
       >
          <div
             className={cn(

@@ -1,4 +1,6 @@
-export default function Cursor() {
+import { memo } from 'react';
+
+function Cursor() {
    return (
       <span
          aria-hidden
@@ -6,3 +8,5 @@ export default function Cursor() {
       />
    );
 }
+
+export default memo(Cursor);

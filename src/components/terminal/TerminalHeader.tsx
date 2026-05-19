@@ -1,8 +1,10 @@
+import { memo } from 'react';
+
 type Props = {
    onClose?: () => void;
 };
 
-export default function TerminalHeader({ onClose }: Props) {
+function TerminalHeader({ onClose }: Props) {
    return (
       <div className="flex items-center gap-2 bg-zinc-900 px-4 py-2 border-b border-zinc-800">
          <span
@@ -15,3 +17,5 @@ export default function TerminalHeader({ onClose }: Props) {
       </div>
    );
 }
+
+export default memo(TerminalHeader);
