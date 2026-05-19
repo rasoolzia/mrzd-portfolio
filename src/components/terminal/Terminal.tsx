@@ -13,18 +13,14 @@ export default function Terminal({ className, onClose }: Props) {
 
    return (
       <div
-         className="fixed inset-0 z-10 flex items-center justify-center"
-         style={{
-            background: 'rgba(10, 14, 39, 0.85)',
-            backdropFilter: 'blur(4px)',
-         }}
+         className="fixed inset-0 z-10 flex items-center justify-center bg-[rgba(10,14,39,0.85)] backdrop-blur-sm"
          onClick={(e) => {
             if (e.target === e.currentTarget) onClose?.();
          }}
       >
          <div
             className={cn(
-               'max-w-5xl mx-auto bg-black border border-zinc-800 rounded-md shadow-xl overflow-hidden',
+               'w-full max-w-3xl mx-4 bg-[#1e1e1e] border border-zinc-700 rounded-lg shadow-2xl overflow-hidden',
                className,
             )}
          >

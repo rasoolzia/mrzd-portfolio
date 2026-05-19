@@ -17,6 +17,7 @@ export default function InteractiveTerminal({ commands, onClose }: Props) {
    const [historyIndex, setHistoryIndex] = useState<number | null>(null);
 
    const inputRef = useRef<HTMLInputElement>(null);
+   const bottomRef = useRef<HTMLDivElement>(null);
 
    const makeInputFocus = useCallback(() => {
       inputRef.current?.focus();
@@ -25,6 +26,10 @@ export default function InteractiveTerminal({ commands, onClose }: Props) {
    useEffect(() => {
       makeInputFocus();
    }, [makeInputFocus]);
+
+   useEffect(() => {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+   }, [history]);
 
    function runCommand(cmd: string) {
       const trimmed = cmd.trim();
@@ -40,7 +45,6 @@ export default function InteractiveTerminal({ commands, onClose }: Props) {
       }
 
       const handler = commands[trimmed];
-
       const output = handler ? handler() : `command not found: ${trimmed}`;
 
       setHistory((prev) => [...prev, { command: trimmed, output }]);
@@ -48,9 +52,7 @@ export default function InteractiveTerminal({ commands, onClose }: Props) {
 
    function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
-
       if (!input.trim()) return;
-
       runCommand(input);
       setHistoryIndex(null);
       setInput('');
@@ -59,23 +61,18 @@ export default function InteractiveTerminal({ commands, onClose }: Props) {
    function handleKeyDown(e: React.KeyboardEvent) {
       if (e.key === 'ArrowUp') {
          e.preventDefault();
-
          const newIndex =
             historyIndex === null
                ? history.length - 1
                : Math.max(0, historyIndex - 1);
-
          setHistoryIndex(newIndex);
          setInput(history[newIndex]?.command ?? '');
       }
 
       if (e.key === 'ArrowDown') {
          e.preventDefault();
-
          if (historyIndex === null) return;
-
          const newIndex = historyIndex + 1;
-
          if (newIndex >= history.length) {
             setHistoryIndex(null);
             setInput('');
@@ -88,33 +85,34 @@ export default function InteractiveTerminal({ commands, onClose }: Props) {
 
    return (
       <div
-         className="p-6 text-sm min-h-96 max-h-96 overflow-auto"
+         className="p-4 font-mono text-sm text-zinc-200 h-96 overflow-y-auto"
          onClick={makeInputFocus}
       >
          {history.map((item, i) => (
-            <div key={i} className="mb-4">
+            <div key={i} className="mb-3">
                <div>
                   <span className="text-green-400">$ </span>
                   {item.command}
                </div>
-
-               <div className="ml-5 mt-1">{item.output}</div>
+               <div className="ml-4 mt-1 text-zinc-300">{item.output}</div>
             </div>
          ))}
 
          <form onSubmit={handleSubmit} className="flex items-center">
             <span className="text-green-400 mr-2">$</span>
             {!input && <Cursor />}
-
             <input
                ref={inputRef}
                value={input}
                onChange={(e) => setInput(e.target.value)}
                onKeyDown={handleKeyDown}
-               className="bg-transparent outline-none flex-1"
+               className="bg-transparent outline-none flex-1 text-zinc-100 caret-transparent"
                autoComplete="off"
+               spellCheck={false}
             />
          </form>
+
+         <div ref={bottomRef} />
       </div>
    );
 }
