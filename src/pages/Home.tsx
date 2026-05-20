@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import Portfolio from '../components/portfolio/Portfolio';
-import Terminal from '../components/terminal/Terminal';
-import type { NavAction } from '../types/nav';
+import Portfolio from '@/components/portfolio/Portfolio';
+import Terminal from '@/components/terminal/Terminal';
+import type { NavAction } from '@/types/nav';
 
 export default function Home() {
    const [activeModal, setActiveModal] = useState<NavAction | null>(null);
