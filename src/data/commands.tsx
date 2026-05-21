@@ -1,5 +1,5 @@
-import InfoGrid from '../components/terminal/InfoGrid';
-import TerminalList from '../components/terminal/TerminalList';
+import InfoGrid from '@/components/terminal/InfoGrid';
+import TerminalList from '@/components/terminal/TerminalList';
 import {
    certifications,
    contact,

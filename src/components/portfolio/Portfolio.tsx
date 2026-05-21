@@ -1,5 +1,5 @@
-import type { NavAction } from '../../types/nav';
-import PixelRocket from '../svg/PixelRocket';
+import PixelRocket from '@/components/svg/PixelRocket';
+import type { NavAction } from '@/types/nav';
 import NavLinks from './NavLinks';
 import ParallaxScene from './ParallaxScene';
 import RainbowDivider from './RainbowDivider';

@@ -1,5 +1,5 @@
-import { getHref } from '../../helper/getHref';
-import type { LinkItem, NavAction } from '../../types/nav';
+import { getHref } from '@/helper/getHref';
+import type { LinkItem, NavAction } from '@/types/nav';
 
 interface NavLinksProps {
    onHandleAction: (action: NavAction) => void;
