@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
-import { getCommands } from '../../data/commands';
-import { cn } from '../../lib/cn';
+import { getCommands } from '@/data/commands';
+import { cn } from '@/lib/cn';
 import InteractiveTerminal from './InteractiveTerminal';
 import TerminalHeader from './TerminalHeader';
 
 type Props = {
    className?: string;
-   onClose?: () => void;
 };
 
-export default function Terminal({ className, onClose }: Props) {
+export default function Terminal({ className }: Props) {
    const commands = useMemo(() => getCommands(), []);
 
    return (
@@ -25,8 +24,8 @@ export default function Terminal({ className, onClose }: Props) {
                className,
             )}
          >
-            <TerminalHeader onClose={onClose} />
-            <InteractiveTerminal commands={commands} onClose={onClose} />
+            <TerminalHeader />
+            <InteractiveTerminal commands={commands} />
          </div>
       </div>
    );

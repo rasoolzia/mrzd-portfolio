@@ -1,8 +1,9 @@
-import { useCallback, useState } from 'react';
 import Portal from '@/components/common/Portal';
 import Portfolio from '@/components/portfolio/Portfolio';
 import Terminal from '@/components/terminal/Terminal';
+import { ModalContext } from '@/context/ModalContext';
 import type { NavAction } from '@/types/nav';
+import { useCallback, useState } from 'react';
 
 export default function Home() {
    const [activeModal, setActiveModal] = useState<NavAction | null>(null);
@@ -11,16 +12,18 @@ export default function Home() {
       (action: NavAction) => setActiveModal(action),
       [],
    );
-   const handleClose = useCallback(() => setActiveModal(null), []);
+   const closeModal = useCallback(() => setActiveModal(null), []);
 
    return (
-      <main className="relative min-h-screen">
-         <Portfolio onHandleAction={handleAction} />
+      <ModalContext.Provider value={{ closeModal }}>
+         <main className="relative min-h-screen">
+            <Portfolio onHandleAction={handleAction} />
 
-         <Portal>
-            {activeModal === 'terminal' && <Terminal onClose={handleClose} />}
-            {/* {activeModal === 'contact' && <ContactModal onClose={handleClose} />} */}
-         </Portal>
-      </main>
+            <Portal>
+               {activeModal === 'terminal' && <Terminal />}
+               {/* {activeModal === 'contact' && <ContactModal />} */}
+            </Portal>
+         </main>
+      </ModalContext.Provider>
    );
 }

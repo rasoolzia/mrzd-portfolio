@@ -1,3 +1,4 @@
+import { useModal } from '@/context/ModalContext';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Cursor from './Cursor';
 
@@ -5,10 +6,11 @@ type CommandHandler = () => React.ReactNode;
 
 type Props = {
    commands: Record<string, CommandHandler>;
-   onClose?: () => void;
 };
 
-export default function InteractiveTerminal({ commands, onClose }: Props) {
+export default function InteractiveTerminal({ commands }: Props) {
+   const { closeModal } = useModal();
+
    const [history, setHistory] = useState<
       { command: string; output: React.ReactNode }[]
    >([]);
@@ -40,7 +42,7 @@ export default function InteractiveTerminal({ commands, onClose }: Props) {
       }
 
       if (trimmed === 'exit') {
-         onClose?.();
+         closeModal();
          return;
       }
 
