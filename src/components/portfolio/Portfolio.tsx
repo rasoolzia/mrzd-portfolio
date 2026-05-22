@@ -1,14 +1,9 @@
 import PixelRocket from '@/components/svg/PixelRocket';
-import type { NavAction } from '@/types/nav';
 import NavLinks from './NavLinks';
 import ParallaxScene from './ParallaxScene';
 import RainbowDivider from './RainbowDivider';
 
-interface PortfolioProps {
-   onHandleAction: (action: NavAction) => void;
-}
-
-export default function Portfolio({ onHandleAction }: PortfolioProps) {
+export default function Portfolio() {
    return (
       <div className="flex min-h-screen overflow-hidden bg-[#0a0e27] font-['JetBrains_Mono',monospace] text-slate-400">
          {/* Left — content */}
@@ -31,7 +26,7 @@ export default function Portfolio({ onHandleAction }: PortfolioProps) {
 
                <RainbowDivider />
 
-               <NavLinks onHandleAction={onHandleAction} />
+               <NavLinks />
             </div>
          </section>
 

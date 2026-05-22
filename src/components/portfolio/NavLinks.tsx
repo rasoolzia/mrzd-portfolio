@@ -1,9 +1,6 @@
+import { useModal } from '@/context/modal/ModalContext';
 import { getHref } from '@/helper/getHref';
-import type { LinkItem, NavAction } from '@/types/nav';
-
-interface NavLinksProps {
-   onHandleAction: (action: NavAction) => void;
-}
+import type { LinkItem } from '@/types/nav';
 
 const LINKS: LinkItem[] = [
    {
@@ -52,7 +49,9 @@ const LINKS: LinkItem[] = [
 const baseLinkClasses =
    'text-sky-300 no-underline transition-colors duration-150 hover:text-white';
 
-export default function NavLinks({ onHandleAction }: NavLinksProps) {
+export default function NavLinks() {
+   const { openModal } = useModal();
+
    return (
       <nav className="leading-loose flex gap-4 flex-wrap">
          {LINKS.map(({ symbol, color, label, href, action, external }) => (
@@ -62,7 +61,7 @@ export default function NavLinks({ onHandleAction }: NavLinksProps) {
                {action ? (
                   <button
                      type="button"
-                     onClick={() => onHandleAction(action)}
+                     onClick={() => openModal(action)}
                      className={`${baseLinkClasses} cursor-pointer bg-transparent border-none p-0 font-inherit`}
                   >
                      {label}

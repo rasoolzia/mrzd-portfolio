@@ -1,29 +1,30 @@
 import Portal from '@/components/common/Portal';
 import Portfolio from '@/components/portfolio/Portfolio';
 import Terminal from '@/components/terminal/Terminal';
-import { ModalContext } from '@/context/ModalContext';
-import type { NavAction } from '@/types/nav';
-import { useCallback, useState } from 'react';
+import { useModal } from '@/context/modal/ModalContext';
+import { ModalProvider } from '@/context/modal/ModalProvider';
 
 export default function Home() {
-   const [activeModal, setActiveModal] = useState<NavAction | null>(null);
-
-   const handleAction = useCallback(
-      (action: NavAction) => setActiveModal(action),
-      [],
+   return (
+      <ModalProvider>
+         <HomeContent />
+      </ModalProvider>
    );
-   const closeModal = useCallback(() => setActiveModal(null), []);
+}
+
+function HomeContent() {
+   const { activeModal } = useModal();
 
    return (
-      <ModalContext.Provider value={{ closeModal }}>
-         <main className="relative min-h-screen">
-            <Portfolio onHandleAction={handleAction} />
+      <main className="relative min-h-screen">
+         <Portfolio />
 
+         {activeModal && (
             <Portal>
                {activeModal === 'terminal' && <Terminal />}
                {/* {activeModal === 'contact' && <ContactModal />} */}
             </Portal>
-         </main>
-      </ModalContext.Provider>
+         )}
+      </main>
    );
 }
