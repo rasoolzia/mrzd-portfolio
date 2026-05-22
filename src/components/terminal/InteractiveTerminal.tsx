@@ -1,4 +1,4 @@
-import { useModal } from '@/context/ModalContext';
+import { useModal } from '@/context/modal/ModalContext';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Cursor from './Cursor';
 

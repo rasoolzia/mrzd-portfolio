@@ -1,4 +1,4 @@
-import { useModal } from '@/context/ModalContext';
+import { useModal } from '@/context/modal/ModalContext';
 import { memo } from 'react';
 
 function TerminalHeader() {
