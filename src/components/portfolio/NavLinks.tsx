@@ -1,4 +1,5 @@
 import { useModal } from '@/context/modal/ModalContext';
+import { contact } from '@/data/portfolio';
 import { getHref } from '@/helper/getHref';
 import type { LinkItem } from '@/types/nav';
 
@@ -22,14 +23,14 @@ const LINKS: LinkItem[] = [
       symbol: '+',
       color: '#ff4444',
       label: 'github',
-      href: 'https://github.com/rasoolzia',
+      href: contact.github,
       external: true,
    },
    {
       symbol: '☆',
       color: '#44ddff',
       label: 'linkedin',
-      href: 'https://linkedin.com/in/rasoolzia',
+      href: contact.linkedin,
       external: true,
    },
    {
