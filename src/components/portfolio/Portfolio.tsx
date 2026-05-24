@@ -1,4 +1,5 @@
 import PixelRocket from '@/components/svg/PixelRocket';
+import { profile } from '@/data/portfolio';
 import NavLinks from './NavLinks';
 import ParallaxScene from './ParallaxScene';
 import RainbowDivider from './RainbowDivider';
@@ -12,16 +13,11 @@ export default function Portfolio() {
                <PixelRocket />
 
                <h1 className="mb-6 bg-linear-to-r from-[#ff4444] to-[#ff7b00] bg-clip-text text-4xl font-bold leading-tight text-transparent sm:text-5xl">
-                  Rasool Zia
+                  {profile.fullName}
                </h1>
 
                <p className="mb-6 text-sm leading-relaxed text-sky-300 md:text-base">
-                  Hi, I&apos;m Rasool — a Senior Frontend Engineer with over 6
-                  years of experience specializing in React (Next.js) and
-                  Vue.js. I architect scalable, high-performance web
-                  applications and enterprise-grade solutions with a deep focus
-                  on clean code, performance optimization, and pixel-perfect
-                  design.
+                  {profile.bio}
                </p>
 
                <RainbowDivider />

@@ -20,7 +20,8 @@ export interface Education {
 
 export const profile = {
    name: 'Rasool',
-   bio: 'Senior Frontend Engineer with 6+ years of experience building scalable, high-performance web applications using React (Next.js) and Vue. Strong focus on clean architecture, performance optimization, and pixel-perfect implementation.',
+   fullName: 'Rasool Zia',
+   bio: "Hi, I'm Rasool — a Senior Frontend Engineer with 6+ years of experience building scalable, high-performance web applications using React (Next.js) and Vue.js. I’m passionate about clean architecture, exceptional UI/UX, performance optimization, and building maintainable products that scale.",
    goal: 'Senior Frontend Engineer · Remote / Hybrid · Open to opportunities',
 };
 
