@@ -1,4 +1,4 @@
-import Portal from '@/components/common/Portal';
+import Modal from '@/components/common/Modal';
 import Portfolio from '@/components/portfolio/Portfolio';
 import Terminal from '@/components/terminal/Terminal';
 import { useModal } from '@/context/modal/ModalContext';
@@ -13,18 +13,29 @@ export default function Home() {
 }
 
 function HomeContent() {
-   const { activeModal } = useModal();
+   const { activeModal, closeModal } = useModal();
 
    return (
       <main className="relative min-h-screen">
          <Portfolio />
 
-         {activeModal && (
-            <Portal>
-               {activeModal === 'terminal' && <Terminal />}
-               {/* {activeModal === 'contact' && <ContactModal />} */}
-            </Portal>
-         )}
+         <Modal
+            open={activeModal === 'terminal'}
+            onClose={closeModal}
+            closeOnOutsideClick={false}
+            closeOnEscape={false}
+         >
+            <Terminal />
+         </Modal>
+
+         {/* 
+         <Modal
+            open={activeModal === 'contact'}
+            onClose={closeModal}
+         >
+            <ContactModal />
+         </Modal> 
+         */}
       </main>
    );
 }
