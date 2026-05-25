@@ -1,12 +1,15 @@
-export default function PixelRocket() {
+export const PixelRocket = ({ size = 80, ...props }) => {
    return (
       <svg
+         width={size}
+         height={size}
          className="w-20 mb-8"
          viewBox="0 0 64 64"
          xmlns="http://www.w3.org/2000/svg"
          style={{
             imageRendering: 'pixelated',
          }}
+         {...props}
       >
          <rect x="28" y="8" width="8" height="8" fill="#ff4444" />
          <rect x="24" y="16" width="16" height="8" fill="#ff4444" />
@@ -22,4 +25,4 @@ export default function PixelRocket() {
          <rect x="48" y="56" width="8" height="8" fill="#757575" />
       </svg>
    );
-}
+};

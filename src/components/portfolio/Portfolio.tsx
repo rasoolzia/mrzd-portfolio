@@ -1,4 +1,4 @@
-import PixelRocket from '@/components/svg/PixelRocket';
+import { PixelRocket } from '@/components/svg/PixelRocket';
 import { profile } from '@/data/portfolio';
 import NavLinks from './NavLinks';
 import ParallaxScene from './ParallaxScene';
