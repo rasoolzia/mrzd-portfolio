@@ -1,5 +1,7 @@
 import { contact } from '@/data/portfolio';
-import { Github, Linkedin, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { Mail, MapPin, Phone, Send } from 'lucide-react';
+import { GithubIcon } from '../svg/GithubIcon';
+import { LinkedinIcon } from '../svg/LinkedinIcon';
 
 const CONTACT_ITEMS = [
    {
@@ -24,13 +26,13 @@ const CONTACT_ITEMS = [
       label: 'GitHub',
       value: contact.github.replace('https://', ''),
       href: contact.github,
-      icon: Github,
+      icon: GithubIcon,
    },
    {
       label: 'LinkedIn',
       value: contact.linkedin.replace('https://', ''),
       href: contact.linkedin,
-      icon: Linkedin,
+      icon: LinkedinIcon,
    },
    {
       label: 'Location',
