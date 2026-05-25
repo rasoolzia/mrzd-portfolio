@@ -1,4 +1,5 @@
 import Modal from '@/components/common/Modal';
+import ContactModal from '@/components/contact/ContactModal';
 import Portfolio from '@/components/portfolio/Portfolio';
 import Terminal from '@/components/terminal/Terminal';
 import { useModal } from '@/context/modal/ModalContext';
@@ -23,19 +24,13 @@ function HomeContent() {
             open={activeModal === 'terminal'}
             onClose={closeModal}
             closeOnOutsideClick={false}
-            closeOnEscape={false}
          >
             <Terminal />
          </Modal>
 
-         {/* 
-         <Modal
-            open={activeModal === 'contact'}
-            onClose={closeModal}
-         >
+         <Modal open={activeModal === 'contact'} onClose={closeModal}>
             <ContactModal />
-         </Modal> 
-         */}
+         </Modal>
       </main>
    );
 }
