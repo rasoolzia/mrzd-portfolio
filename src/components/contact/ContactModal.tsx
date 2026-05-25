@@ -1,4 +1,7 @@
 import { cn } from '@/lib/cn';
+import ContactForm from './ContactForm';
+import ContactMethods from './ContactMethods';
+import ContactModalHeader from './ContactModalHeader';
 
 type Props = {
    className?: string;
@@ -13,18 +16,14 @@ export default function ContactModal({ className }: Props) {
          )}
       >
          {/* Header */}
-         <div className="border-b border-zinc-700 px-6 py-5">
-            <h2 className="text-2xl font-semibold text-white">Contact Me</h2>
-
-            <p className="mt-2 text-sm leading-6 text-zinc-400">
-               Interested in collaboration, freelance work, frontend
-               architecture, or building scalable web applications? Reach out
-               through any of the channels below.
-            </p>
-         </div>
+         <ContactModalHeader />
 
          <div className="grid grid-cols-1 gap-8 p-6 lg:grid-cols-2">
-            contact info
+            {/* Contact Methods */}
+            <ContactMethods />
+
+            {/* Contact Form */}
+            <ContactForm />
          </div>
       </div>
    );
