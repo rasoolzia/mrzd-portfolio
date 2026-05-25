@@ -10,7 +10,7 @@ export default function ContactForm() {
          <form className="space-y-4">
             <div>
                <label className="mb-2 block text-sm text-zinc-400">
-                  Your Telegram ID
+                  Your Telegram Username (for reaching out to you)
                </label>
 
                <input
@@ -27,6 +27,7 @@ export default function ContactForm() {
 
                <textarea
                   rows={6}
+                  dir="auto"
                   placeholder="Write your message..."
                   className="w-full resize-none rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-white outline-none transition focus:border-zinc-500"
                />
@@ -34,7 +35,8 @@ export default function ContactForm() {
 
             <button
                type="submit"
-               className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90"
+               className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90 disabled:bg-gray-500"
+               disabled
             >
                <MessageCircle size={16} />
                Send Message

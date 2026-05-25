@@ -11,14 +11,15 @@ export default function ContactModal({ className }: Props) {
    return (
       <div
          className={cn(
-            'w-full max-w-4xl overflow-hidden rounded-lg border border-zinc-700 bg-[#1e1e1e] shadow-2xl',
+            'flex flex-col w-full h-full max-h-inherit rounded-lg border border-zinc-700 bg-[#1e1e1e] overflow-hidden',
             className,
          )}
       >
          {/* Header */}
          <ContactModalHeader />
 
-         <div className="grid grid-cols-1 gap-8 p-6 lg:grid-cols-2">
+         {/* Body (Scrolls) */}
+         <div className="flex-1 overflow-y-auto p-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
             {/* Contact Methods */}
             <ContactMethods />
 

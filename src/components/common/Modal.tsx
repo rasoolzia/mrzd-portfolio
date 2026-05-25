@@ -62,7 +62,12 @@ export default function Modal({
                }
             }}
          >
-            <div className={cn('w-full max-w-3xl mx-4', contentClassName)}>
+            <div
+               className={cn(
+                  'w-full max-w-4xl mx-4 max-h-[90vh] flex flex-col overflow-hidden shadow-2xl',
+                  contentClassName,
+               )}
+            >
                {children}
             </div>
          </div>
