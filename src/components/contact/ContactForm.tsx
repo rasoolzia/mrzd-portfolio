@@ -1,11 +1,17 @@
 import FormInput from '@/components/common/FormInput';
 import FormTextarea from '@/components/common/FormTextarea';
 import { getHref } from '@/helper/getHref';
-import { MessageCircle } from 'lucide-react';
+import { Loader2, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 
 const API_URL = getHref('bot', 'send.php');
 const API_TOKEN = import.meta.env.VITE_PUBLIC_API_TOKEN;
+
+function normalizeUsername(value: string): string {
+   const trimmed = value.trim();
+   if (!trimmed) return trimmed;
+   return trimmed.startsWith('@') ? trimmed : `@${trimmed}`;
+}
 
 export default function ContactForm() {
    const [username, setUsername] = useState('');
@@ -24,7 +30,8 @@ export default function ContactForm() {
       setStatus('loading');
       setResponseMsg('');
 
-      const text = `📬 New portfolio message\n\nFrom: ${username.trim()}\n\n${message.trim()}`;
+      const normalizedUsername = normalizeUsername(username);
+      const text = `📬 New portfolio message\n\nFrom: ${normalizedUsername}\n\n${message.trim()}`;
 
       try {
          const res = await fetch(API_URL, {
@@ -80,19 +87,24 @@ export default function ContactForm() {
                disabled={!isValid || status === 'loading'}
                className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90 disabled:bg-gray-500 disabled:cursor-not-allowed"
             >
-               <MessageCircle size={16} />
-               {status === 'loading' ? 'Sending...' : 'Send Message'}
+               {status === 'loading' ? (
+                  <>
+                     <Loader2 size={20} className="animate-spin" />
+                     Sending...
+                  </>
+               ) : (
+                  <>
+                     <MessageCircle size={16} />
+                     Send Message
+                  </>
+               )}
             </button>
 
-            {status === 'error' && (
-               <p className="text-sm text-red-400">{responseMsg}</p>
-            )}
-
-            {status === 'success' && (
-               <p className="text-sm text-green-400">
-                  Message sent successfully.
-               </p>
-            )}
+            <p
+               className={`text-sm ${status === 'success' ? 'text-green-400' : status === 'error' ? 'text-red-400' : ''}`}
+            >
+               {responseMsg}
+            </p>
          </form>
       </div>
    );
