@@ -1,11 +1,11 @@
 import FormInput from '@/components/common/FormInput';
 import FormTextarea from '@/components/common/FormTextarea';
 import { getHref } from '@/helper/getHref';
+import { fetchApi } from '@/utils/fetchApi';
 import { Loader2, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 
 const API_URL = getHref('bot', 'send.php');
-const API_TOKEN = import.meta.env.VITE_PUBLIC_API_TOKEN;
 
 function normalizeUsername(value: string): string {
    const trimmed = value.trim();
@@ -34,20 +34,10 @@ export default function ContactForm() {
       const text = `📬 New portfolio message\n\nFrom: ${normalizedUsername}\n\n${message.trim()}`;
 
       try {
-         const res = await fetch(API_URL, {
+         const data = await fetchApi<{ message: string }>(API_URL, {
             method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-               Authorization: `Bearer ${API_TOKEN}`,
-            },
-            body: JSON.stringify({ action: 'api', text }),
+            body: { action: 'api', text },
          });
-
-         const data = await res.json();
-
-         if (!res.ok || !data.success) {
-            throw new Error(data.error ?? 'Something went wrong');
-         }
 
          setStatus('success');
          setMessage('');
