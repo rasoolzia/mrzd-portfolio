@@ -2,8 +2,9 @@ import FormInput from '@/components/common/FormInput';
 import FormTextarea from '@/components/common/FormTextarea';
 import { getHref } from '@/helper/getHref';
 import { fetchApi } from '@/utils/fetchApi';
-import { Loader2, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { useState } from 'react';
+import Button from '../common/Button';
 
 const API_URL = getHref('bot', 'send.php');
 
@@ -72,29 +73,23 @@ export default function ContactForm() {
                onChange={(e) => setMessage(e.target.value)}
             />
 
-            <button
+            <Button
+               loading={status === 'loading'}
+               loadingText="Sending..."
                type="submit"
                disabled={!isValid || status === 'loading'}
-               className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-90 disabled:bg-gray-500 disabled:cursor-not-allowed"
+               prependIcon={MessageCircle}
             >
-               {status === 'loading' ? (
-                  <>
-                     <Loader2 size={20} className="animate-spin" />
-                     Sending...
-                  </>
-               ) : (
-                  <>
-                     <MessageCircle size={16} />
-                     Send Message
-                  </>
-               )}
-            </button>
+               Send Message
+            </Button>
 
-            <p
-               className={`text-sm ${status === 'success' ? 'text-green-400' : status === 'error' ? 'text-red-400' : ''}`}
-            >
-               {responseMsg}
-            </p>
+            {responseMsg && (
+               <p
+                  className={`text-sm ${status === 'success' ? 'text-green-400' : 'text-red-400'}`}
+               >
+                  {responseMsg}
+               </p>
+            )}
          </form>
       </div>
    );
