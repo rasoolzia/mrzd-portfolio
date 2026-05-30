@@ -12,19 +12,20 @@ export async function fetchApi<T = unknown>(
    options: FetchOptions = {},
 ): Promise<T> {
    const { method = 'GET', body, headers = {}, token = API_TOKEN } = options;
+   const isBodyExist = body !== undefined;
 
    if (token) {
       headers['Authorization'] = `Bearer ${token}`;
    }
 
-   if (body !== undefined) {
+   if (isBodyExist) {
       headers['Content-Type'] = 'application/json';
    }
 
    const res = await fetch(url, {
       method,
       headers,
-      body: body !== undefined ? JSON.stringify(body) : undefined,
+      body: isBodyExist ? JSON.stringify(body) : undefined,
    });
 
    const data = await res.json();
