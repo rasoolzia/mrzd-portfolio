@@ -8,21 +8,27 @@ import Button from '../common/Button';
 
 const API_URL = getHref('bot', 'send.php');
 
-function normalizeUsername(value: string): string {
+function normalizeContact(value: string): string {
    const trimmed = value.trim();
    if (!trimmed) return trimmed;
-   return trimmed.startsWith('@') ? trimmed : `@${trimmed}`;
+   const isStartWithAt = trimmed.startsWith('@');
+
+   // if it contains @ not at the start, treat as email
+   if (trimmed.includes('@') && !isStartWithAt) return trimmed;
+
+   // otherwise treat as Telegram username
+   return isStartWithAt ? trimmed : `@${trimmed}`;
 }
 
 export default function ContactForm() {
-   const [username, setUsername] = useState('');
+   const [contact, setContact] = useState('');
    const [message, setMessage] = useState('');
    const [status, setStatus] = useState<
       'idle' | 'loading' | 'success' | 'error'
    >('idle');
    const [responseMsg, setResponseMsg] = useState('');
 
-   const isValid = username.trim().length > 0 && message.trim().length > 0;
+   const isValid = contact.trim().length > 0 && message.trim().length > 0;
 
    async function handleSubmit(e: React.SubmitEvent) {
       e.preventDefault();
@@ -31,7 +37,7 @@ export default function ContactForm() {
       setStatus('loading');
       setResponseMsg('');
 
-      const normalizedUsername = normalizeUsername(username);
+      const normalizedUsername = normalizeContact(contact);
       const text = `📬 New portfolio message\n\nFrom: ${normalizedUsername}\n\n${message.trim()}`;
 
       try {
@@ -57,11 +63,11 @@ export default function ContactForm() {
 
          <form className="space-y-4" onSubmit={handleSubmit}>
             <FormInput
-               label="Your Telegram Username (for reaching out to you)"
+               label="Your Telegram ID or Email (for reaching out to you)"
                type="text"
-               placeholder="@yourusername"
-               value={username}
-               onChange={(e) => setUsername(e.target.value)}
+               placeholder="@username/email"
+               value={contact}
+               onChange={(e) => setContact(e.target.value)}
             />
 
             <FormTextarea
