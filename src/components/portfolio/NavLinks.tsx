@@ -7,8 +7,8 @@ const LINKS: LinkItem[] = [
    {
       symbol: '△',
       color: '#ff4444',
-      label: 'playbook',
-      href: getHref('playbook'),
+      label: 'interview handbook',
+      href: getHref('interview'),
    },
    {
       symbol: '○',
