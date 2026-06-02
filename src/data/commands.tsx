@@ -10,7 +10,9 @@ import {
    skills,
 } from './portfolio';
 
-export function getCommands() {
+type CommandHandler = (args: string[]) => React.ReactNode;
+
+export function getCommands(): Record<string, CommandHandler> {
    return {
       help: () => (
          <InfoGrid
