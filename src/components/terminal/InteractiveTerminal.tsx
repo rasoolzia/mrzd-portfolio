@@ -3,45 +3,79 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Cursor from './Cursor';
 import { Prompt } from './Prompt';
 
-type CommandHandler = () => React.ReactNode;
-type Props = { commands: Record<string, CommandHandler> };
+type CommandHandler = (args: string[]) => React.ReactNode;
+
+type HistoryEntry = {
+   id: string;
+   command: string;
+   output: React.ReactNode;
+};
+
+type Props = {
+   commands: Record<string, CommandHandler>;
+};
 
 export default function InteractiveTerminal({ commands }: Props) {
    const { closeModal } = useModal();
-   const [history, setHistory] = useState<
-      { command: string; output: React.ReactNode }[]
-   >([]);
+
+   const [history, setHistory] = useState<HistoryEntry[]>([]);
    const [input, setInput] = useState('');
    const [historyIndex, setHistoryIndex] = useState<number | null>(null);
    const [cursorOffset, setCursorOffset] = useState(0);
 
    const inputRef = useRef<HTMLInputElement>(null);
-   const inputWrapRef = useRef<HTMLSpanElement>(null);
    const bottomRef = useRef<HTMLDivElement>(null);
 
-   const makeInputFocus = useCallback(() => inputRef.current?.focus(), []);
+   const charWidthRef = useRef(0);
+
+   const commandHistoryRef = useRef<string[]>([]);
+
+   useEffect(() => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      if (!ctx) return;
+
+      const input = inputRef.current;
+
+      if (input) {
+         ctx.font = getComputedStyle(input).font;
+         charWidthRef.current = ctx.measureText('M').width;
+      }
+   }, []);
+
+   const makeInputFocus = useCallback(() => {
+      inputRef.current?.focus();
+   }, []);
+
+   const updateCursorPosition = useCallback(() => {
+      const el = inputRef.current;
+
+      if (!el) return;
+
+      const pos = el.selectionStart ?? el.value.length;
+
+      setCursorOffset(charWidthRef.current * pos);
+   }, []);
 
    useEffect(() => {
       makeInputFocus();
    }, [makeInputFocus]);
+
    useEffect(() => {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      bottomRef.current?.scrollIntoView({
+         behavior: 'smooth',
+      });
    }, [history]);
 
-   // Measure cursor position based on text width
    useEffect(() => {
-      const input = inputRef.current;
-      if (!input) return;
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d')!;
-      ctx.font = getComputedStyle(input).font;
-      const selStart = input.selectionStart ?? input.value.length;
-      const textBefore = input.value.slice(0, selStart);
-      setCursorOffset(ctx.measureText(textBefore).width);
-   }, [input]);
+      updateCursorPosition();
+   }, [input, updateCursorPosition]);
 
    function runCommand(cmd: string) {
       const trimmed = cmd.trim();
+
+      if (!trimmed) return;
 
       if (trimmed === 'clear') {
          setHistory([]);
@@ -53,95 +87,157 @@ export default function InteractiveTerminal({ commands }: Props) {
          return;
       }
 
-      const firstWord = trimmed.split(/\s+/)[0];
-      const handler = commands[trimmed];
-      const output = handler ? handler() : `command not found: ${firstWord}`;
+      const last =
+         commandHistoryRef.current[commandHistoryRef.current.length - 1];
 
-      setHistory((prev) => [...prev, { command: cmd, output }]);
+      if (last !== trimmed) {
+         commandHistoryRef.current.push(trimmed);
+      }
+
+      const [commandName, ...args] = trimmed.split(/\s+/);
+
+      const handler = commands[commandName];
+
+      const output = handler
+         ? handler(args)
+         : `command not found: ${commandName}`;
+
+      setHistory((prev) => [
+         ...prev,
+         {
+            id: crypto.randomUUID(),
+            command: trimmed,
+            output,
+         },
+      ]);
    }
 
    function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
+
       if (!input.trim()) return;
+
       runCommand(input);
-      setHistoryIndex(null);
+
       setInput('');
+      setHistoryIndex(null);
    }
 
-   function handleKeyDown(e: React.KeyboardEvent) {
+   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+      const commandHistory = commandHistoryRef.current;
+
+      if (e.ctrlKey && e.key.toLowerCase() === 'l') {
+         e.preventDefault();
+         setHistory([]);
+         return;
+      }
+
+      if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+         e.preventDefault();
+
+         setHistory((prev) => [
+            ...prev,
+            {
+               id: crypto.randomUUID(),
+               command: input,
+               output: '^C',
+            },
+         ]);
+
+         setInput('');
+         setHistoryIndex(null);
+
+         return;
+      }
+
+      if (e.key === 'Tab') {
+         e.preventDefault();
+
+         const matches = Object.keys(commands).filter((cmd) =>
+            cmd.startsWith(input.trim()),
+         );
+
+         if (matches.length === 1) {
+            setInput(matches[0]);
+         }
+
+         return;
+      }
+
       if (e.key === 'ArrowUp') {
          e.preventDefault();
-         const newIndex =
+
+         if (!commandHistory.length) return;
+
+         const nextIndex =
             historyIndex === null
-               ? history.length - 1
+               ? commandHistory.length - 1
                : Math.max(0, historyIndex - 1);
-         setHistoryIndex(newIndex);
-         setInput(history[newIndex]?.command ?? '');
+
+         setHistoryIndex(nextIndex);
+         setInput(commandHistory[nextIndex] ?? '');
+
+         return;
       }
 
       if (e.key === 'ArrowDown') {
          e.preventDefault();
+
          if (historyIndex === null) return;
-         const newIndex = historyIndex + 1;
-         if (newIndex >= history.length) {
+
+         const nextIndex = historyIndex + 1;
+
+         if (nextIndex >= commandHistory.length) {
             setHistoryIndex(null);
             setInput('');
          } else {
-            setHistoryIndex(newIndex);
-            setInput(history[newIndex].command);
+            setHistoryIndex(nextIndex);
+            setInput(commandHistory[nextIndex]);
          }
+
+         return;
+      }
+
+      if (e.key === 'Home' || e.key === 'End') {
+         requestAnimationFrame(updateCursorPosition);
       }
    }
 
    return (
       <div
-         className="p-4 font-mono text-sm text-zinc-200 h-96 overflow-y-auto cursor-text"
+         className="h-96 overflow-y-auto cursor-text p-4 font-mono text-sm text-zinc-200"
          onClick={makeInputFocus}
       >
-         {history.map((item, i) => (
-            <div key={i} className="mb-3">
+         {history.map((item) => (
+            <div key={item.id} className="mb-3">
                <div>
                   <span className="text-green-400">
                      <Prompt />
                   </span>
+
                   <span className="ml-2">{item.command}</span>
                </div>
-               <div className="ml-4 mt-1 text-zinc-300">{item.output}</div>
+
+               <div className="mt-1 ml-4 text-zinc-300">{item.output}</div>
             </div>
          ))}
 
          <form onSubmit={handleSubmit} className="flex items-center">
-            <span className="text-green-400 mr-2">
+            <span className="mr-2 text-green-400">
                <Prompt />
             </span>
-            <span
-               ref={inputWrapRef}
-               className="relative flex-1 flex items-center"
-            >
+
+            <span className="relative flex flex-1 items-center">
                <Cursor offset={cursorOffset} />
+
                <input
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  onKeyUp={() => {
-                     const el = inputRef.current;
-                     if (el)
-                        setCursorOffset(
-                           (() => {
-                              const canvas = document.createElement('canvas');
-                              const ctx = canvas.getContext('2d')!;
-                              ctx.font = getComputedStyle(el).font;
-                              return ctx.measureText(
-                                 el.value.slice(
-                                    0,
-                                    el.selectionStart ?? el.value.length,
-                                 ),
-                              ).width;
-                           })(),
-                        );
-                  }}
-                  className="bg-transparent outline-none w-full text-zinc-100 caret-transparent"
+                  onSelect={updateCursorPosition}
+                  onClick={updateCursorPosition}
+                  className="w-full bg-transparent text-zinc-100 outline-none caret-transparent"
                   autoComplete="off"
                   spellCheck={false}
                />
