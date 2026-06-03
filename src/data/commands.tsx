@@ -13,7 +13,7 @@ import {
 type CommandHandler = (args: string[]) => React.ReactNode;
 
 export function getCommands(): Record<string, CommandHandler> {
-   return {
+   const commands: Record<string, CommandHandler> = {
       help: () => (
          <InfoGrid
             cols="130px 1fr"
@@ -24,10 +24,41 @@ export function getCommands(): Record<string, CommandHandler> {
                { label: 'education', value: 'Education info' },
                { label: 'projects', value: 'View projects' },
                { label: 'contact', value: 'Contact information' },
+               { label: 'ls', value: 'List files' },
+               { label: 'cat', value: 'Read a file' },
                { label: 'clear', value: 'Clear terminal' },
             ]}
          />
       ),
+
+      ls: () => {
+         const files = [
+            'whoami',
+            'skills',
+            'experience',
+            'education',
+            'projects',
+            'contact',
+         ];
+         return (
+            <div className="flex flex-wrap gap-x-4 gap-y-1">
+               {files.map((f) => (
+                  <span key={f} className="text-blue-400">
+                     {f}
+                  </span>
+               ))}
+            </div>
+         );
+      },
+
+      cat: (args) => {
+         const file = args[0];
+         if (!file) return 'Usage: cat <file>';
+         const handler = commands[file];
+         if (!handler || file === 'ls' || file === 'cat')
+            return `cat: ${file}: No such file or directory`;
+         return handler([]);
+      },
 
       whoami: () => (
          <div>
@@ -96,4 +127,6 @@ export function getCommands(): Record<string, CommandHandler> {
          />
       ),
    };
+
+   return commands;
 }
