@@ -152,13 +152,22 @@ export default function InteractiveTerminal({ commands }: Props) {
 
       if (e.key === 'Tab') {
          e.preventDefault();
+         const trimmed = input.trim();
+         const parts = trimmed.split(/\s+/);
 
-         const matches = Object.keys(commands).filter((cmd) =>
-            cmd.startsWith(input.trim()),
-         );
-
-         if (matches.length === 1) {
-            setInput(matches[0]);
+         if (parts.length === 2 && parts[0] === 'cat') {
+            // complete the filename argument
+            const files = Object.keys(commands).filter(
+               (cmd) =>
+                  !['ls', 'cat', 'clear', 'exit', 'help'].includes(cmd) &&
+                  cmd.startsWith(parts[1]),
+            );
+            if (files.length === 1) setInput(`cat ${files[0]}`);
+         } else {
+            const matches = Object.keys(commands).filter((cmd) =>
+               cmd.startsWith(trimmed),
+            );
+            if (matches.length === 1) setInput(matches[0]);
          }
 
          return;
