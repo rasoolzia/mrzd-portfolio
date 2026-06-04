@@ -100,7 +100,7 @@ export default function InteractiveTerminal({ commands }: Props) {
 
       const output = handler
          ? handler(args)
-         : `command not found: ${commandName}`;
+         : `bash: ${commandName}: command not found`;
 
       setHistory((prev) => [
          ...prev,
@@ -249,6 +249,7 @@ export default function InteractiveTerminal({ commands }: Props) {
                   className="w-full bg-transparent text-zinc-100 outline-none caret-transparent"
                   autoComplete="off"
                   spellCheck={false}
+                  placeholder={history.length > 0 ? undefined : 'help'}
                />
             </span>
          </form>
