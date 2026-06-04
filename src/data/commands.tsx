@@ -10,7 +10,16 @@ import {
    skills,
 } from './portfolio';
 
-type CommandHandler = (args: string[]) => React.ReactNode;
+type CommandHandler = (args?: string[]) => React.ReactNode;
+
+const FILES = [
+   'about.txt',
+   'skills.txt',
+   'experience.txt',
+   'education.txt',
+   'projects.txt',
+   'contact.txt',
+];
 
 export function getCommands(): Record<string, CommandHandler> {
    const commands: Record<string, CommandHandler> = {
@@ -18,55 +27,42 @@ export function getCommands(): Record<string, CommandHandler> {
          <InfoGrid
             cols="130px 1fr"
             rows={[
-               { label: 'whoami', value: 'About me' },
-               { label: 'skills', value: 'List skills' },
-               { label: 'experience', value: 'Work history' },
-               { label: 'education', value: 'Education info' },
-               { label: 'projects', value: 'View projects' },
-               { label: 'contact', value: 'Contact information' },
+               { label: 'whoami', value: 'The User Name And Stack' },
                { label: 'ls', value: 'List files' },
-               { label: 'cat', value: 'Read a file' },
+               { label: 'cat <file>', value: 'Read a file' },
                { label: 'clear', value: 'Clear terminal' },
+               { label: 'exit', value: 'Exit terminal' },
             ]}
          />
       ),
 
-      ls: () => {
-         const files = [
-            'whoami',
-            'skills',
-            'experience',
-            'education',
-            'projects',
-            'contact',
-         ];
-         return (
-            <div className="flex flex-wrap gap-x-4 gap-y-1">
-               {files.map((f) => (
-                  <span key={f} className="text-blue-400">
-                     {f}
-                  </span>
-               ))}
-            </div>
-         );
-      },
+      ls: () => (
+         <div className="flex flex-wrap gap-x-4 gap-y-1">
+            {FILES.map((f) => (
+               <span key={f} className="text-blue-400">
+                  {f}
+               </span>
+            ))}
+         </div>
+      ),
 
       cat: (args) => {
-         const file = args[0];
+         const file = args?.[0];
          if (!file) return 'Usage: cat <file>';
-         const handler = commands[file];
-         if (!handler || file === 'ls' || file === 'cat')
-            return `cat: ${file}: No such file or directory`;
-         return handler([]);
+         const handler = commands[file.replace(/\.txt$/, '')];
+         if (!handler || !FILES.includes(file))
+            return `cat: ${args?.[0]}: No such file or directory`;
+         return handler();
       },
 
       whoami: () => (
          <div>
             <div className="text-orange-300">{profile.name}</div>
-            <div>{profile.bio}</div>
             <div className="text-zinc-400 mt-1">{profile.goal}</div>
          </div>
       ),
+
+      about: () => <div>{profile.bio}</div>,
 
       skills: () => <TerminalList items={skills} />,
 
