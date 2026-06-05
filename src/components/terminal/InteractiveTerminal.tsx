@@ -1,4 +1,5 @@
 import { useModal } from '@/context/modal/ModalContext';
+import { FILE_NAMES } from '@/data/commands';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Cursor from './Cursor';
 import { Prompt } from './Prompt';
@@ -155,15 +156,11 @@ export default function InteractiveTerminal({ commands }: Props) {
          const trimmed = input.trim();
          const parts = trimmed.split(/\s+/);
 
-         if (parts.length === 2 && parts[0] === 'cat') {
-            // complete the filename argument
-            const files = Object.keys(commands).filter(
-               (cmd) =>
-                  !['ls', 'cat', 'clear', 'exit', 'help'].includes(cmd) &&
-                  cmd.startsWith(parts[1]),
-            );
-            if (files.length === 1) setInput(`cat ${files[0]}`);
-         } else {
+         if (parts[0] === 'cat' && parts.length <= 2) {
+            const prefix = parts[1] ?? '';
+            const matches = FILE_NAMES.filter((f) => f.startsWith(prefix));
+            if (matches.length === 1) setInput(`cat ${matches[0]}`);
+         } else if (parts.length === 1) {
             const matches = Object.keys(commands).filter((cmd) =>
                cmd.startsWith(trimmed),
             );
