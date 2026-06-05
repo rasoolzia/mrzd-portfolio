@@ -1,5 +1,5 @@
 import { useModal } from '@/context/modal/ModalContext';
-import { FILE_NAMES } from '@/data/commands';
+import { FILE_NAMES } from '@/data/files';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Cursor from './Cursor';
 import { Prompt } from './Prompt';
