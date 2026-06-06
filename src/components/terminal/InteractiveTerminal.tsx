@@ -15,6 +15,11 @@ type Props = {
    commands: Record<string, CommandHandler>;
 };
 
+const SPACIAL_COMMANDS = {
+   clear: 'clear',
+   exit: 'exit',
+};
+
 export default function InteractiveTerminal({ commands }: Props) {
    const { closeModal } = useModal();
 
@@ -25,9 +30,7 @@ export default function InteractiveTerminal({ commands }: Props) {
 
    const inputRef = useRef<HTMLInputElement>(null);
    const bottomRef = useRef<HTMLDivElement>(null);
-
    const charWidthRef = useRef(0);
-
    const commandHistoryRef = useRef<string[]>([]);
 
    useEffect(() => {
@@ -73,18 +76,6 @@ export default function InteractiveTerminal({ commands }: Props) {
    }, [input, updateCursorPosition]);
 
    function runCommand(cmd: string) {
-      if (cmd === 'clear') {
-         //TODO move this to commands
-         setHistory([]);
-         return;
-      }
-
-      if (cmd === 'exit') {
-         //TODO move this to commands
-         closeModal();
-         return;
-      }
-
       //ignore duplicate commands
       const last =
          commandHistoryRef.current[commandHistoryRef.current.length - 1];
@@ -96,18 +87,23 @@ export default function InteractiveTerminal({ commands }: Props) {
 
       const handler = commands[commandName];
 
+      let callback;
+      if (cmd === SPACIAL_COMMANDS.exit) {
+         callback = closeModal;
+      } else if (cmd === SPACIAL_COMMANDS.clear) {
+         callback = () => setHistory([]);
+      }
+
       const output = handler
-         ? handler(args)
+         ? handler(args, callback)
          : `bash: ${commandName}: command not found`;
 
-      setHistory((prev) => [
-         ...prev,
-         {
-            id: crypto.randomUUID(),
-            command: cmd,
-            output,
-         },
-      ]);
+      if (cmd !== SPACIAL_COMMANDS.clear) {
+         setHistory((prev) => [
+            ...prev,
+            { id: crypto.randomUUID(), command: cmd, output },
+         ]);
+      }
    }
 
    function handleSubmit(e: React.FormEvent) {

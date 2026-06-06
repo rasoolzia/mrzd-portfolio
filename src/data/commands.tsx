@@ -1,7 +1,7 @@
 import InfoGrid from '@/components/terminal/InfoGrid';
+import type { CommandHandler } from '@/types/terminal';
 import { FILES } from './files';
 import { profile } from './portfolio';
-import type { CommandHandler } from '@/types/terminal';
 
 export function getCommands(): Record<string, CommandHandler> {
    return {
@@ -45,12 +45,12 @@ export function getCommands(): Record<string, CommandHandler> {
          return render();
       },
 
-      clear: (args) => {
-         console.log('args :', args);
+      clear: (_, callback) => {
+         callback?.();
       },
 
-      exit: (args) => {
-         console.log('args :', args);
+      exit: (_, callback) => {
+         callback?.();
       },
    };
 }
