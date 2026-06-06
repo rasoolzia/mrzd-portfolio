@@ -1,8 +1,7 @@
 import InfoGrid from '@/components/terminal/InfoGrid';
 import { FILES } from './files';
 import { profile } from './portfolio';
-
-type CommandHandler = (args?: string[]) => React.ReactNode;
+import type { CommandHandler } from '@/types/terminal';
 
 export function getCommands(): Record<string, CommandHandler> {
    return {
@@ -44,6 +43,14 @@ export function getCommands(): Record<string, CommandHandler> {
          const render = FILES[key];
          if (!render) return `cat: ${filename}: No such file or directory`;
          return render();
+      },
+
+      clear: (args) => {
+         console.log('args :', args);
+      },
+
+      exit: (args) => {
+         console.log('args :', args);
       },
    };
 }

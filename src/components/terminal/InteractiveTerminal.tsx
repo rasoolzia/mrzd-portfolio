@@ -1,10 +1,9 @@
 import { useModal } from '@/context/modal/ModalContext';
 import { FILE_NAMES } from '@/data/files';
+import type { CommandHandler } from '@/types/terminal';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Cursor from './Cursor';
 import { Prompt } from './Prompt';
-
-type CommandHandler = (args: string[]) => React.ReactNode;
 
 type HistoryEntry = {
    id: string;
@@ -74,28 +73,26 @@ export default function InteractiveTerminal({ commands }: Props) {
    }, [input, updateCursorPosition]);
 
    function runCommand(cmd: string) {
-      const trimmed = cmd.trim();
-
-      if (!trimmed) return;
-
-      if (trimmed === 'clear') {
+      if (cmd === 'clear') {
+         //TODO move this to commands
          setHistory([]);
          return;
       }
 
-      if (trimmed === 'exit') {
+      if (cmd === 'exit') {
+         //TODO move this to commands
          closeModal();
          return;
       }
 
+      //ignore duplicate commands
       const last =
          commandHistoryRef.current[commandHistoryRef.current.length - 1];
-
-      if (last !== trimmed) {
-         commandHistoryRef.current.push(trimmed);
+      if (last !== cmd) {
+         commandHistoryRef.current.push(cmd);
       }
 
-      const [commandName, ...args] = trimmed.split(/\s+/);
+      const [commandName, ...args] = cmd.split(/\s+/);
 
       const handler = commands[commandName];
 
@@ -107,7 +104,7 @@ export default function InteractiveTerminal({ commands }: Props) {
          ...prev,
          {
             id: crypto.randomUUID(),
-            command: trimmed,
+            command: cmd,
             output,
          },
       ]);
@@ -115,10 +112,11 @@ export default function InteractiveTerminal({ commands }: Props) {
 
    function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
+      const trimmed = input.trim();
 
-      if (!input.trim()) return;
+      if (!trimmed) return;
 
-      runCommand(input);
+      runCommand(trimmed);
 
       setInput('');
       setHistoryIndex(null);
