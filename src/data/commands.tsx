@@ -45,12 +45,12 @@ export function getCommands(): Record<string, CommandHandler> {
          return render();
       },
 
-      clear: (_, callback) => {
-         callback?.();
+      clear: (_, ctx) => {
+         ctx.clear();
       },
 
-      exit: (_, callback) => {
-         callback?.();
+      exit: (_, ctx) => {
+         ctx.exit();
       },
    };
 }

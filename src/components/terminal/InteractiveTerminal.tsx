@@ -15,11 +15,6 @@ type Props = {
    commands: Record<string, CommandHandler>;
 };
 
-const SPACIAL_COMMANDS = {
-   clear: 'clear',
-   exit: 'exit',
-};
-
 export default function InteractiveTerminal({ commands }: Props) {
    const { closeModal } = useModal();
 
@@ -76,9 +71,9 @@ export default function InteractiveTerminal({ commands }: Props) {
    }, [input, updateCursorPosition]);
 
    function runCommand(cmd: string) {
-      //ignore duplicate commands
       const last =
          commandHistoryRef.current[commandHistoryRef.current.length - 1];
+
       if (last !== cmd) {
          commandHistoryRef.current.push(cmd);
       }
@@ -87,21 +82,23 @@ export default function InteractiveTerminal({ commands }: Props) {
 
       const handler = commands[commandName];
 
-      let callback;
-      if (cmd === SPACIAL_COMMANDS.exit) {
-         callback = closeModal;
-      } else if (cmd === SPACIAL_COMMANDS.clear) {
-         callback = () => setHistory([]);
-      }
+      const ctx = {
+         clear: () => setHistory([]),
+         exit: () => closeModal(),
+      };
 
       const output = handler
-         ? handler(args, callback)
+         ? handler(args, ctx)
          : `bash: ${commandName}: command not found`;
 
-      if (cmd !== SPACIAL_COMMANDS.clear) {
+      if (output !== undefined) {
          setHistory((prev) => [
             ...prev,
-            { id: crypto.randomUUID(), command: cmd, output },
+            {
+               id: crypto.randomUUID(),
+               command: cmd,
+               output,
+            },
          ]);
       }
    }
