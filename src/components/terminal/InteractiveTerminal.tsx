@@ -1,6 +1,6 @@
 import { useModal } from '@/context/modal/ModalContext';
 import { FILE_NAMES } from '@/data/files';
-import type { CommandHandler } from '@/types/terminal';
+import type { CommandContext, CommandRegistry } from '@/types/terminal';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Cursor from './Cursor';
 import { Prompt } from './Prompt';
@@ -12,7 +12,7 @@ type HistoryEntry = {
 };
 
 type Props = {
-   commands: Record<string, CommandHandler>;
+   commands: CommandRegistry;
 };
 
 export default function InteractiveTerminal({ commands }: Props) {
@@ -70,37 +70,38 @@ export default function InteractiveTerminal({ commands }: Props) {
       updateCursorPosition();
    }, [input, updateCursorPosition]);
 
-   function runCommand(cmd: string) {
-      const last =
+   function runCommand(command: string) {
+      const lastCommand =
          commandHistoryRef.current[commandHistoryRef.current.length - 1];
 
-      if (last !== cmd) {
-         commandHistoryRef.current.push(cmd);
+      if (lastCommand !== command) {
+         commandHistoryRef.current.push(command);
       }
 
-      const [commandName, ...args] = cmd.split(/\s+/);
+      const [name, ...args] = command.split(/\s+/);
+      const commandExecuter = commands.get(name);
 
-      const handler = commands[commandName];
-
-      const ctx = {
+      const ctx: CommandContext = {
          clear: () => setHistory([]),
          exit: () => closeModal(),
+         print: (output) => {
+            setHistory((prev) => [
+               ...prev,
+               {
+                  id: crypto.randomUUID(),
+                  command,
+                  output,
+               },
+            ]);
+         },
       };
 
-      const output = handler
-         ? handler(args, ctx)
-         : `bash: ${commandName}: command not found`;
-
-      if (output !== undefined) {
-         setHistory((prev) => [
-            ...prev,
-            {
-               id: crypto.randomUUID(),
-               command: cmd,
-               output,
-            },
-         ]);
+      if (!commandExecuter) {
+         ctx.print(`bash: ${name}: command not found`);
+         return;
       }
+
+      commandExecuter.execute(ctx, args);
    }
 
    function handleSubmit(e: React.FormEvent) {
@@ -144,7 +145,13 @@ export default function InteractiveTerminal({ commands }: Props) {
 
       if (e.key === 'Tab') {
          e.preventDefault();
+
          const trimmed = input.trim();
+         if (!trimmed) {
+            setInput('help');
+            return;
+         }
+
          const parts = trimmed.split(/\s+/);
 
          if (parts[0] === 'cat' && parts.length <= 2) {
@@ -152,7 +159,7 @@ export default function InteractiveTerminal({ commands }: Props) {
             const matches = FILE_NAMES.filter((f) => f.startsWith(prefix));
             if (matches.length === 1) setInput(`cat ${matches[0]}`);
          } else if (parts.length === 1) {
-            const matches = Object.keys(commands).filter((cmd) =>
+            const matches = [...commands.keys()].filter((cmd) =>
                cmd.startsWith(trimmed),
             );
             if (matches.length === 1) setInput(matches[0]);
