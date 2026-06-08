@@ -2,8 +2,8 @@ import { useModal } from '@/context/modal/ModalContext';
 import { FILE_NAMES } from '@/data/files';
 import type { CommandContext, CommandRegistry } from '@/types/terminal';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import CommandLine from './CommandLine';
 import Cursor from './Cursor';
-import { Prompt } from './Prompt';
 
 type HistoryEntry = {
    id: string;
@@ -215,11 +215,7 @@ export default function InteractiveTerminal({ commands }: Props) {
          {history.map((item) => (
             <div key={item.id} className="mb-3">
                <div>
-                  <span className="text-green-400">
-                     <Prompt />
-                  </span>
-
-                  <span className="ml-2">{item.command}</span>
+                  <CommandLine command={item.command} />
                </div>
 
                <div className="mt-1 ml-4 text-zinc-300">{item.output}</div>
@@ -227,16 +223,13 @@ export default function InteractiveTerminal({ commands }: Props) {
          ))}
 
          <form onSubmit={handleSubmit} className="flex items-center">
-            <span className="mr-2 text-green-400">
-               <Prompt />
-            </span>
+            <CommandLine />
 
             <span className="relative flex flex-1 items-center">
-               <Cursor offset={cursorOffset} />
-
                <input
                   ref={inputRef}
                   value={input}
+                  name="prompt"
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   onSelect={updateCursorPosition}
@@ -246,6 +239,8 @@ export default function InteractiveTerminal({ commands }: Props) {
                   spellCheck={false}
                   placeholder={history.length > 0 ? undefined : 'help'}
                />
+
+               <Cursor offset={cursorOffset} />
             </span>
          </form>
 

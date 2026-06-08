@@ -8,7 +8,7 @@ export default function Portfolio() {
    return (
       <div className="flex min-h-screen overflow-hidden bg-[#0a0e27] font-['JetBrains_Mono',monospace] text-slate-400">
          {/* Left — content */}
-         <section className="relative z-10 flex flex-1 items-start md:items-center justify-center px-6 py-10 md:px-12 lg:px-16">
+         <div className="relative z-10 flex flex-1 items-start md:items-center justify-center px-6 py-10 md:px-12 lg:px-16">
             <div className="max-w-xl">
                <PixelRocket />
 
@@ -24,7 +24,7 @@ export default function Portfolio() {
 
                <NavLinks />
             </div>
-         </section>
+         </div>
 
          {/* Right — parallax scene */}
          <aside className="flex-1 hidden md:block">

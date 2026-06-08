@@ -1,17 +1,27 @@
-type Props = {
-   command: string;
-   children?: React.ReactNode;
+type PromptProps = {
+   user?: string;
+   host?: string;
+   cwd?: string;
+   command?: string;
 };
 
-export default function CommandLine({ command, children }: Props) {
+export default function CommandLine({
+   user = 'guest',
+   host = 'local',
+   cwd = '~',
+   command,
+}: PromptProps) {
    return (
-      <div className="my-4">
-         <div>
-            <span className="text-green-400">$ </span>
-            <span className="text-cyan-300">{command}</span>
-         </div>
-
-         {children && <div className="mt-2 ml-5">{children}</div>}
-      </div>
+      <>
+         <span className="whitespace-nowrap">
+            <span className="text-green-400">{user}</span>
+            <span className="text-zinc-400">@</span>
+            <span className="text-green-400">{host}</span>
+            <span className="text-zinc-400">:</span>
+            <span className="text-blue-400">{cwd}</span>
+            <span className="text-zinc-200 mx-2">$</span>
+         </span>
+         {command && <span>{command}</span>}
+      </>
    );
 }
