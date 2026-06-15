@@ -6,7 +6,7 @@ import { MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 import Button from '../common/Button';
 
-const API_URL = getHref('bot', 'send.php');
+const API_URL = getHref('bot', 'send-message/');
 
 function normalizeContact(value: string): string {
    const trimmed = value.trim();
@@ -68,6 +68,7 @@ export default function ContactForm() {
                placeholder="@username/email"
                value={contact}
                onChange={(e) => setContact(e.target.value)}
+               disabled={status === 'loading'}
             />
 
             <FormTextarea
@@ -77,6 +78,7 @@ export default function ContactForm() {
                placeholder="Write your message..."
                value={message}
                onChange={(e) => setMessage(e.target.value)}
+               disabled={status === 'loading'}
             />
 
             <Button
