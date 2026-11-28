@@ -1,5 +1,6 @@
 import { PixelRocket } from '@/components/svg/PixelRocket';
 import { profile } from '@/data/portfolio';
+import BrandWordmark from './BrandWordmark';
 import NavLinks from './NavLinks';
 import ParallaxScene from './ParallaxScene';
 import RainbowDivider from './RainbowDivider';
@@ -13,7 +14,7 @@ export default function Portfolio() {
                <PixelRocket />
 
                <h1 className="mb-6 bg-linear-to-r from-[#ff4444] to-[#ff7b00] bg-clip-text text-4xl font-bold leading-tight text-transparent sm:text-5xl">
-                  {profile.fullName}
+                  <BrandWordmark />
                </h1>
 
                <p className="mb-6 text-sm leading-relaxed text-sky-300 md:text-base">

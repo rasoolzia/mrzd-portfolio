@@ -25,6 +25,18 @@ export const profile = {
    goal: 'Senior Frontend Engineer · Remote / Hybrid · Open to opportunities',
 };
 
+export const brand = {
+  name: 'MRZD',
+  fullName: 'Mohammad Rasool Ziaaddini',
+  meaning: 'Mohammad · Rasool · Ziaaddini · Developer',
+  letters: [
+    { letter: 'M', color: '#ff4444' },
+    { letter: 'R', color: '#ff8844' },
+    { letter: 'Z', color: '#ffdd44' },
+    { letter: 'D', color: '#44ff44' },
+  ],
+};
+
 export const skills = [
    // Frontend Frameworks
    'React.js · Hooks, React Router, Context API, Zustand, Redux, React Query',

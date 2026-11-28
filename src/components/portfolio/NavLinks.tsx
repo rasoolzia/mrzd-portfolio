@@ -4,10 +4,11 @@ import { getHref } from '@/helper/getHref';
 import type { LinkItem } from '@/types/nav';
 
 const LINKS: LinkItem[] = [
+   { symbol: '◿', color: '#ffdd44', label: 'resume', href: getHref('cv') },
    {
       symbol: '△',
       color: '#ff4444',
-      label: 'interview handbook',
+      label: 'handbook',
       href: getHref('interview'),
    },
    {
@@ -16,9 +17,8 @@ const LINKS: LinkItem[] = [
       label: 'projects',
       href: getHref('demo'),
    },
-   { symbol: '□', color: '#ffdd44', label: 'games', href: '#games' },
-   { symbol: '◇', color: '#44ff44', label: 'tools', href: '#tools' },
-   { symbol: '◿', color: '#ffdd44', label: 'cv', href: getHref('cv') },
+   { symbol: '◇', color: '#44ff44', label: 'tool', href: getHref('tool') },
+   { symbol: '□', color: '#ffdd44', label: 'api', href: getHref('api') },
    {
       symbol: '+',
       color: '#ff4444',
@@ -54,9 +54,9 @@ export default function NavLinks() {
    const { openModal } = useModal();
 
    return (
-      <nav className="leading-loose flex gap-4 flex-wrap">
+      <nav className="leading-loose flex gap-y-4 gap-x-3 flex-wrap">
          {LINKS.map(({ symbol, color, label, href, action, external }) => (
-            <span key={label} className="inline-flex items-center gap-2">
+            <span key={label} className="inline-flex items-center gap-1.5">
                <span style={{ color }}>{symbol}</span>
 
                {action ? (
