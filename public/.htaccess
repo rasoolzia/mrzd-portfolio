@@ -1,0 +1,8 @@
+Options -Indexes -MultiViews
+
+RewriteEngine On
+
+# SPA fallback
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /mrzd.ir/main/index.html [L]

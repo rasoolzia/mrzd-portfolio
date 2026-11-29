@@ -1,0 +1,56 @@
+name: Deploy to cPanel
+
+on:
+   push:
+      branches:
+         - main
+   workflow_dispatch:
+
+permissions:
+   contents: read
+
+concurrency:
+   group: deploy-mrzd-ir
+   cancel-in-progress: false
+
+jobs:
+   deploy:
+      runs-on: ubuntu-latest
+
+      steps:
+         - name: Checkout repository
+           uses: actions/checkout@v4
+
+         - name: Set up pnpm
+           uses: pnpm/action-setup@v4
+           with:
+              version: 11.10.0
+
+         - name: Set up Node.js
+           uses: actions/setup-node@v4
+           with:
+              node-version: 22
+              cache: pnpm
+
+         - name: Install dependencies
+           run: pnpm install --frozen-lockfile
+
+         - name: Build
+           run: pnpm build
+
+         - name: Verify build output
+           run: |
+              test -f dist/index.html
+              test -f dist/.htaccess || true
+              echo "Build output verified."
+
+         - name: Deploy to cPanel
+           uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+           with:
+              server: ${{ secrets.FTP_SERVER }}
+              username: ${{ secrets.FTP_USERNAME }}
+              password: ${{ secrets.FTP_PASSWORD }}
+              protocol: ftps
+              local-dir: dist/
+              server-dir: public_html/mrzd.ir/main/
+              dangerous-clean-slate: true
